@@ -1374,6 +1374,69 @@
 
 
 /* ============================================
+   SECCIÓN DE AUTOCOMPLETADO
+   ============================================ */
+
+/* Contenedor de la sección de autocompletado */
+.autocomplete-section {
+  margin: var(--spacing-lg) 0;
+  padding: var(--spacing-lg);
+  background: var(--color-bg-primary);
+  border: 2px dashed var(--color-neon-cyan);
+  border-radius: 0;
+}
+
+/* Label del autocompletado */
+.autocomplete-label {
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  color: var(--color-neon-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.label-icon {
+  font-size: 1.2rem;
+  animation: pulse 2s infinite;
+}
+
+/* Hint de ayuda */
+.autocomplete-hint {
+  margin-top: var(--spacing-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.autocomplete-hint em {
+  color: var(--color-neon-yellow);
+}
+
+/* ============================================
+   PREVIEW DE IMAGEN
+   ============================================ */
+
+.image-preview {
+  margin-top: var(--spacing-md);
+  max-width: 300px;
+  border: 2px solid var(--color-neon-cyan);
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 768px) {

@@ -1,0 +1,221 @@
+/* ============================================
+   AUTOCOMPLETE SEARCH - Búsqueda con sugerencias
+   ============================================ */
+
+/* Contenedor principal */
+.autocomplete-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Wrapper del input con loader */
+.autocomplete-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Input de búsqueda */
+.autocomplete-input {
+  width: 100%;
+  padding: var(--spacing-md);
+  padding-right: 50px; /* Espacio para el loader */
+  border: 2px solid var(--color-neon-cyan);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.autocomplete-input:focus {
+  outline: none;
+  border-color: var(--color-neon-pink);
+  box-shadow: 
+    var(--glow-pink),
+    inset 0 0 20px rgba(255, 0, 110, 0.2),
+    0 0 30px rgba(255, 0, 110, 0.3);
+  background: rgba(255, 0, 110, 0.05);
+}
+
+/* Loader dentro del input */
+.autocomplete-loader {
+  position: absolute;
+  right: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite;
+}
+
+/* ============================================
+   DROPDOWN DE RESULTADOS
+   ============================================ */
+
+/* Contenedor del dropdown */
+.autocomplete-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--color-bg-secondary);
+  border: 3px solid var(--color-neon-cyan);
+  box-shadow: 
+    var(--glow-cyan),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header del dropdown */
+.autocomplete-header {
+  padding: var(--spacing-sm);
+  background: var(--color-bg-primary);
+  border-bottom: 2px solid var(--color-neon-cyan);
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  color: var(--color-neon-cyan);
+  text-shadow: var(--glow-cyan);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* ============================================
+   ITEMS DEL DROPDOWN
+   ============================================ */
+
+/* Item individual */
+.autocomplete-item {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+  align-items: center;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover {
+  background: rgba(0, 217, 255, 0.1);
+  border-left: 3px solid var(--color-neon-pink);
+  padding-left: calc(var(--spacing-sm) + 3px);
+}
+
+/* Imagen del item */
+.autocomplete-item-image {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid var(--color-neon-cyan);
+  flex-shrink: 0;
+}
+
+/* Información del item */
+.autocomplete-item-info {
+  flex: 1;
+  min-width: 0; /* Para que el texto se trunce correctamente */
+}
+
+/* Título del item */
+.autocomplete-item-title {
+  font-family: var(--font-pixel);
+  font-size: 0.8rem;
+  color: var(--color-neon-cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Metadatos del item (año, plataformas, géneros) */
+.autocomplete-item-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.autocomplete-item-meta span {
+  display: inline-block;
+}
+
+/* ============================================
+   MENSAJE SIN RESULTADOS
+   ============================================ */
+
+.autocomplete-no-results {
+  padding: var(--spacing-lg);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA DEL DROPDOWN
+   ============================================ */
+
+.autocomplete-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+  background: var(--color-neon-cyan);
+  border-radius: 0;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-pink);
+  box-shadow: var(--glow-pink);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .autocomplete-dropdown {
+    max-height: 300px;
+  }
+
+  .autocomplete-item-image {
+    width: 50px;
+    height: 65px;
+  }
+
+  .autocomplete-item-title {
+    font-size: 0.7rem;
+  }
+
+  .autocomplete-item-meta {
+    font-size: 0.8rem;
+  }
+}
