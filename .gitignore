@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables - Firebase credentials
+.env
+.env.local
+.env.production
+.env.*.local

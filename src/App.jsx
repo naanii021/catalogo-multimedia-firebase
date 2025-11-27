@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { lazy, Suspense, useState } from 'react';
+import LoadingScreen from './components/LoadingScreen';
 import './App.css';
 
 // Lazy loading de componentes para mejorar rendimiento inicial
@@ -9,29 +8,31 @@ const HomePage = lazy(() => import('./assets/pages/HomePage.jsx'));
 const ItemDetailPage = lazy(() => import('./assets/pages/ItemDetailPage.jsx'));
 const ItemFormPage = lazy(() => import('./assets/pages/ItemFormPage.jsx'));
 
-// Componente de loading futurista
-const LoadingSpinner = () => (
+// Componente de loading simple para transiciones entre páginas
+const PageLoader = () => (
   <div style={{
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
-    color: '#ba68c8',
+    background: 'var(--color-bg-primary)',
+    color: 'var(--color-neon-cyan)',
     fontSize: '1.5rem',
-    fontWeight: '600',
-    textShadow: '0 0 20px rgba(186, 104, 200, 0.5)'
+    fontFamily: 'var(--font-pixel)',
+    textShadow: 'var(--glow-cyan)',
+    letterSpacing: '3px'
   }}>
     <div style={{
       width: '40px',
       height: '40px',
-      border: '3px solid rgba(186, 104, 200, 0.3)',
-      borderTop: '3px solid #ba68c8',
+      border: '3px solid transparent',
+      borderTop: '3px solid var(--color-neon-cyan)',
       borderRadius: '50%',
       animation: 'spin 1s linear infinite',
-      marginRight: '1rem'
+      marginRight: '1rem',
+      boxShadow: 'var(--glow-cyan)'
     }}></div>
-    Cargando...
+    LOADING...
     <style>{`
       @keyframes spin {
         0% { transform: rotate(0deg); }
@@ -42,10 +43,21 @@ const LoadingSpinner = () => (
 );
 
 function App() {
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+
+  const handleLoadingComplete = () => {
+    setShowLoadingScreen(false);
+  };
+
+  // Mostrar pantalla de carga inicial
+  if (showLoadingScreen) {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
+  }
+
   return (
     <Router>
       <div className="App">
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/item/:id" element={<ItemDetailPage />} />

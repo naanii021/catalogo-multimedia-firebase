@@ -40,9 +40,7 @@ export const createItem = (type, data) => ({
 
 // Estructura de un comentario
 export const createComment = (data) => ({
-  id: data.id || null,
   itemId: data.itemId,
-  userId: data.userId,
   userName: data.userName,
   text: data.text,
   rating: data.rating || null, // 1-5 estrellas

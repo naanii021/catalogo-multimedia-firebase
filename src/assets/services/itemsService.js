@@ -11,7 +11,7 @@ export const getItems = async () => {
     const querySnapshot = await getDocs(q);
     const items = [];
     querySnapshot.forEach((doc) => {
-      items.push({ id: doc.id, ...doc.data() });
+      items.push({ ...doc.data(), id: doc.id });
     });
     return items;
   } catch (error) {
@@ -26,7 +26,7 @@ export const getItemById = async (id) => {
     const docRef = doc(db, ITEMS_COLLECTION, id);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() };
+      return {  ...docSnap.data(), id: docSnap.id };
     } else {
       throw new Error('Item not found');
     }
@@ -41,7 +41,7 @@ export const createItemDoc = async (itemData) => {
   try {
     const item = createItem(itemData.type, itemData);
     const docRef = await addDoc(collection(db, ITEMS_COLLECTION), item);
-    return { id: docRef.id, ...item };
+    return {...item, id: docRef.id };
   } catch (error) {
     console.error('Error creating item:', error);
     throw error;
@@ -57,7 +57,7 @@ export const updateItem = async (id, itemData) => {
       updatedAt: new Date()
     };
     await updateDoc(docRef, updatedData);
-    return { id, ...updatedData };
+    return { ...updatedData, id };
   } catch (error) {
     console.error('Error updating item:', error);
     throw error;

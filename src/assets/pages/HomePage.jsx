@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ItemCard from '../../components/ItemCard.jsx';
-import { getItems } from '../services/itemsService.js';
+// ✅ Importar onSnapshot en lugar de usar solo getDocs
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '../services/firebase.js';
 import { ITEM_TYPES } from '../models.js';
 
 const HomePage = () => {
@@ -10,10 +12,44 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // 'all', 'videojuego', 'serie', 'pelicula'
 
+  // ✅ useEffect que configura el listener de tiempo real
   useEffect(() => {
-    loadItems();
-  }, []);
+    // Crear la query ordenada por fecha de creación
+    const q = query(
+      collection(db, 'items'), 
+      orderBy('createdAt', 'desc')
+    );
 
+    // ✅ onSnapshot se ejecuta automáticamente cada vez que hay cambios en Firestore
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot) => {
+        // Crear array con todos los ítems actualizados
+        const itemsData = [];
+        querySnapshot.forEach((doc) => {
+          itemsData.push({ ...doc.data(), id: doc.id });
+        });
+        
+        console.log('📡 Datos actualizados en tiempo real:', itemsData);
+        setItems(itemsData); // Actualizar estado
+        setLoading(false); // Marcar como cargado
+      },
+      (error) => {
+        // Manejar errores de la suscripción
+        console.error('Error en tiempo real:', error);
+        setLoading(false);
+      }
+    );
+
+    // ✅ Cleanup: cancelar suscripción cuando el componente se desmonte
+    // Esto evita memory leaks y listeners huérfanos
+    return () => {
+      console.log('🔌 Desconectando listener de tiempo real');
+      unsubscribe();
+    };
+  }, []); // Array vacío = solo se ejecuta al montar el componente
+
+  // ✅ useEffect para filtrar ítems (se mantiene igual)
   useEffect(() => {
     if (filter === 'all') {
       setFilteredItems(items);
@@ -22,16 +58,6 @@ const HomePage = () => {
     }
   }, [items, filter]);
 
-  const loadItems = async () => {
-    try {
-      const itemsData = await getItems();
-      setItems(itemsData);
-    } catch (error) {
-      console.error('Error loading items:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return <div className="loading">Cargando catálogo...</div>;

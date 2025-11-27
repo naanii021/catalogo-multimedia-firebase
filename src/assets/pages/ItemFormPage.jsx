@@ -90,7 +90,7 @@ const ItemFormPage = () => {
       </header>
 
       <form onSubmit={handleSubmit} className="item-form">
-        <div className="form-group">
+        <div className="form-group" >
           <label htmlFor="type">Tipo de ítem:</label>
           <select
             id="type"
@@ -99,7 +99,7 @@ const ItemFormPage = () => {
             onChange={handleChange}
             disabled={isEditing} // No permitir cambiar tipo en edición
           >
-            <option value={ITEM_TYPES.VIDEOJUEGO}>Videojuego</option>
+            <option value={ITEM_TYPES.VIDEOJUEGO} >Videojuego</option>
             <option value={ITEM_TYPES.SERIE}>Serie</option>
             <option value={ITEM_TYPES.PELICULA}>Película</option>
           </select>
